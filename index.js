@@ -14,11 +14,15 @@ app.use("/", express.static("public"));
 
 app.use(cors());
 
-function connectDB() {
-  mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log("Connected Successfully"));
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected Successfully");
+  } catch (error) {
+    console.error("MongoDB Connection Error:", error);
+  }
 }
+
 connectDB();
 
 // const urls = new Map();
@@ -35,19 +39,38 @@ const schema = mongoose.Schema({
 const Url = mongoose.model("urlims", schema);
 
 app.post("/shorten", async (req, res) => {
-  const body = req.body;
-  const longUrl = body.longUrl;
-  const shortCode = nanoid(6);
-  const url = new Url({
-    shortCode: shortCode,
-    longUrl: longUrl,
-  });
-  await url.save();
-  // urls.set(shortCode, longUrl);
-  const shortUrl = `${req.protocol}://${req.get("host")}/url/${shortcode}`;
-  res.status(201).json({
-    shortUrl: shortUrl,
-  });
+  try {
+    const longUrl = req.body?.longUrl;
+
+    if (!longUrl) {
+      return res.status(400).json({
+        error: "Please enter a URL"
+      });
+    }
+
+    const shortCode = nanoid(6);
+
+    const url = new Url({
+      shortCode: shortCode,
+      longUrl: longUrl
+    });
+
+    await url.save();
+
+    const shortUrl =
+      ${req.protocol}://${req.get("host")}/url/${shortCode};
+
+    return res.status(201).json({
+      shortUrl: shortUrl
+    });
+  } catch (error) {
+    console.error("SHORTEN ROUTE ERROR:", error);
+
+    return res.status(500).json({
+      error: "URL shortening failed",
+      details: error.message
+    });
+  }
 });
 
 app.get("/url/:code", async (req, res) => {
