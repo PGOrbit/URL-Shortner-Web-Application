@@ -44,7 +44,7 @@ app.post("/shorten", async (req, res) => {
 
     if (!longUrl) {
       return res.status(400).json({
-        error: "Please enter a URL"
+        error: "Please enter a URL",
       });
     }
 
@@ -52,23 +52,22 @@ app.post("/shorten", async (req, res) => {
 
     const url = new Url({
       shortCode: shortCode,
-      longUrl: longUrl
+      longUrl: longUrl,
     });
 
     await url.save();
 
-    const shortUrl =
-      ${req.protocol}://${req.get("host")}/url/${shortCode};
+    const shortUrl = `${req.protocol}://${req.get("host")}/url/${shortCode}`;
 
     return res.status(201).json({
-      shortUrl: shortUrl
+      shortUrl: shortUrl,
     });
   } catch (error) {
     console.error("SHORTEN ROUTE ERROR:", error);
 
     return res.status(500).json({
       error: "URL shortening failed",
-      details: error.message
+      details: error.message,
     });
   }
 });
