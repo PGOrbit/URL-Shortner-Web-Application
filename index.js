@@ -44,7 +44,7 @@ app.post("/shorten", async (req, res) => {
   });
   await url.save();
   // urls.set(shortCode, longUrl);
-  const shortUrl = ${req.protocol}://${req.get("host")}/url/${shortcode};
+  const shortUrl = `${req.protocol}://${req.get("host")}/url/${shortcode}`;
   res.status(201).json({
     shortUrl: shortUrl,
   });
