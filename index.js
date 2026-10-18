@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const port = 1234;
 
 app.use(express.json());
 
@@ -45,7 +44,7 @@ app.post("/shorten", async (req, res) => {
   });
   await url.save();
   // urls.set(shortCode, longUrl);
-  const shortUrl = `http://localhost:1234/url/${shortCode}`;
+  const shortUrl = ${req.protocol}://${req.get("host")}/url/${shortcode};
   res.status(201).json({
     shortUrl: shortUrl,
   });
@@ -65,6 +64,4 @@ app.get("/url/:code", async (req, res) => {
   return res.status(302).redirect(longUrl);
 });
 
-app.listen(port, () => {
-  console.log(`App is Running om Port ${port}`);
-});
+export default app;
