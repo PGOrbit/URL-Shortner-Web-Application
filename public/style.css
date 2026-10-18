@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#longUrl{
+    padding: 5px;
+    margin: 20px;
+    width: 800px;
+    height: 10vh;
+    color: black;
+    border: #ffff solid 2px;
+    border-radius: 12px;
+    display: block;
+}
+
+#shortUrl{
+    padding: 5px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+#short{
+    height: 80px;
+    width: 200px;
+    display: block;
+    padding: 5px;
+    margin: 20px;
+    border-radius: 12px;
+}
